@@ -8,7 +8,6 @@ const User = db.User;
 // load input validation
 import validateRegisterForm from "../validation/register";
 import validateLoginForm from "../validation/login";
-import userType from "../models/userType";
 
 // create user
 const create = (req, res) => {

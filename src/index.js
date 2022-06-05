@@ -46,10 +46,10 @@ app.get("/", async (req, res) => {
   const user_count = await User.count();
 
   if (userType_count === 0) {
-    UserType.create({ name: "Admin", accessLevel: 4, role: 1 });
-    UserType.create({ name: "User", accessLevel: 2, role: 2 });
     UserType.create({ name: "Farmer", accessLevel: 2, role: 3 });
+    UserType.create({ name: "User", accessLevel: 2, role: 2 });
     UserType.create({ name: "Renter", accessLevel: 2, role: 4 });
+    UserType.create({ name: "Admin", accessLevel: 4, role: 1 });
     UserType.create({ name: "Manufacturer", accessLevel: 2, role: 5 });
   }
 
@@ -61,7 +61,7 @@ app.get("/", async (req, res) => {
       password: "password",
       address: "#123, KR Puram, Mysuru",
       city: "Mysuru",
-      UserTypeId: 1,
+      UserTypeId: 4,
     };
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -82,6 +82,7 @@ app.get("/", async (req, res) => {
 });
 
 require("./routes/user.js")(app);
+require("./routes/product.js")(app);
 
 //create a server
 var server = app.listen(port, async function () {

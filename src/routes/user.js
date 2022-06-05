@@ -28,8 +28,8 @@ module.exports = (app) => {
     passport.authenticate("jwt", {
       session: false,
     }),
-    // allowOnly(config.accessLevels.admin, findAllUsers)
-    findAllUsers
+    allowOnly(config.accessLevels.admin, findAllUsers)
+    // findAllUsers
   );
 
   // retrieve user by id
@@ -38,8 +38,8 @@ module.exports = (app) => {
     passport.authenticate("jwt", {
       session: false,
     }),
-    // allowOnly(config.accessLevels.user, findById)
-    findById
+    allowOnly(config.accessLevels.user, findById)
+    // findById
   );
 
   // update a user with id
@@ -48,8 +48,8 @@ module.exports = (app) => {
     passport.authenticate("jwt", {
       session: false,
     }),
-    // allowOnly(config.accessLevels.user, update)
-    update
+    allowOnly(config.accessLevels.user, update)
+    // update
   );
 
   // delete a user
@@ -58,7 +58,7 @@ module.exports = (app) => {
     passport.authenticate("jwt", {
       session: false,
     }),
-    deleteUser
-    // allowOnly(config.accessLevels.admin, deleteUser)
+    // deleteUser
+    allowOnly(config.accessLevels.admin, deleteUser)
   );
 };
