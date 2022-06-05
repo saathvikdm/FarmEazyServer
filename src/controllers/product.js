@@ -56,11 +56,11 @@ const updateProduct = (req, res) => {
 
 // delete product
 const deleteProduct = (req, res) => {
-  const id = req.params.userId;
+  const id = req.params.productId;
 
-  User.destroy({ where: { id } })
-    .then((user) =>
-      res.status.json({ msg: "User has been deleted successfully!" })
+  Product.destroy({ where: { id } })
+    .then((product) =>
+      res.status.json({ msg: "Product has been deleted successfully!" })
     )
     .catch((err) => res.status(500).json({ msg: "Something went wrong." }));
 };

@@ -83,6 +83,7 @@ app.get("/", async (req, res) => {
 
 require("./routes/user.js")(app);
 require("./routes/product.js")(app);
+require("./routes/order.js")(app);
 
 //create a server
 var server = app.listen(port, async function () {
