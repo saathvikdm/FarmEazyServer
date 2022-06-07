@@ -6,7 +6,7 @@ const Product = db.Product;
 const createOrder = (req, res) => {
   let order = req.body;
 
-  order.UserId = req.user[0].dataValues.id;
+  if (!req.body.UserId) order.UserId = req.user[0].dataValues.id;
 
   Order.create(order)
     .then((order) => {

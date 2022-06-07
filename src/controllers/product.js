@@ -5,7 +5,7 @@ const Product = db.Product;
 const createProduct = (req, res) => {
   let product = req.body;
 
-  product.UserId = req.user[0].dataValues.id;
+  if (!req.body.UserId) product.UserId = req.user[0].dataValues.id;
 
   Product.create(product)
     .then((product) => {
