@@ -23,7 +23,7 @@ app.use(express.static(__dirname + "/public"));
 
 app.use(
   cors({
-    origin: "http://localhost:3000", // <-- location of the react app we're connecting to
+    origin: "*", // <-- location of the react app we're connecting to
     credentials: true,
   })
 );

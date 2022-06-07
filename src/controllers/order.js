@@ -20,7 +20,26 @@ const createOrder = (req, res) => {
 // fetch all Orders
 const findAllOrders = (req, res) => {
   Order.findAll({
-    include: [{ all: true }],
+    include: [
+      {
+        model: User,
+        attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      },
+      {
+        model: Product,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: {
+          model: User,
+          attributes: {
+            include: [
+              ["firstname", "sellerfname"],
+              ["lastname", "sellerlname"],
+            ],
+            exclude: ["firstname", "password", "createdAt", "updatedAt"],
+          },
+        },
+      },
+    ],
   })
     .then((order) => {
       res.json({ order });
@@ -37,7 +56,32 @@ const findOrderById = (req, res) => {
 
   Order.findAll({
     where: { id },
-    include: [{ all: true }],
+    include: [
+      {
+        model: User,
+        attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      },
+      {
+        model: Product,
+        attributes: { exclude: ["createdAt", "updatedAt"] },
+        include: {
+          model: User,
+          attributes: {
+            include: [
+              ["firstname", "sellerfname"],
+              ["lastname", "sellerlname"],
+            ],
+            exclude: [
+              "firstname",
+              "lastname",
+              "password",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+        },
+      },
+    ],
   })
     .then((order) => {
       if (!order.length) {

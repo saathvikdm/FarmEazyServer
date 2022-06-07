@@ -66,6 +66,7 @@ const login = (req, res) => {
     where: {
       email,
     },
+    attributes: { exclude: ['password", "createdAt", "updatedAt'] },
   })
     .then((user) => {
       //check for user
@@ -97,7 +98,6 @@ const login = (req, res) => {
                 res.json({
                   success: true,
                   token: "Bearer " + token,
-                  role: user[0].dataValues.role,
                   user: user[0].dataValues,
                 });
               }
@@ -115,7 +115,7 @@ const login = (req, res) => {
 // fetch all users
 const findAllUsers = async (req, res) => {
   await User.findAll({
-    include: [{ all: true }],
+    attributes: { exclude: ["password", "createdAt", "updatedAt"] },
   })
     .then((user) => {
       res.json({ user });

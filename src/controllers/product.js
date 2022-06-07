@@ -18,7 +18,14 @@ const createProduct = (req, res) => {
 
 // fetch all products
 const findAllProducts = (req, res) => {
-  Product.findAll()
+  Product.findAll({
+    include: [
+      {
+        model: User,
+        attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      },
+    ],
+  })
     .then((product) => {
       res.json({ product });
     })
@@ -34,6 +41,12 @@ const findProductById = (req, res) => {
 
   Product.findAll({
     where: { id },
+    include: [
+      {
+        model: User,
+        attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+      },
+    ],
   })
     .then((product) => {
       if (!product.length) {
