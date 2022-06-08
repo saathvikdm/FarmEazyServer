@@ -4,6 +4,9 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import models from "./models";
 import bcrypt from "bcryptjs";
+// import fileUpload from "express-fileupload";
+// const path = require("path");
+// import multer from "multer";
 
 import db from "./models";
 const User = db.User;
@@ -12,6 +15,7 @@ const UserType = db.UserType;
 const app = express();
 
 app.use(bodyParser.json());
+// app.use(fileUpload());
 
 let port = process.env.PORT || 8080;
 

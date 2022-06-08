@@ -7,6 +7,12 @@ const createProduct = (req, res) => {
 
   if (!req.body.UserId) product.UserId = req.user[0].dataValues.id;
 
+  if (!req.file) {
+    res.status(400).send("ERROR: file not found");
+  }
+  let imgPath = "http://localhost:8080/images/" + req.file.filename;
+  product.image = imgPath;
+
   Product.create(product)
     .then((product) => {
       res.json({ product });
