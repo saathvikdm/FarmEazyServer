@@ -1,3 +1,4 @@
+import multer from "multer";
 import passport from "passport";
 import config from "../config/config";
 import { allowOnly } from "../services/routesHelper";
@@ -10,10 +11,29 @@ import {
   deleteUser,
 } from "../controllers/user";
 
+const path = require("path");
+
 module.exports = (app) => {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, "src/public/images");
+    },
+
+    // By default, multer removes file extensions so let's add them back
+    filename: function (req, file, cb) {
+      cb(
+        null,
+        file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+      );
+    },
+  });
+
+  let upload = multer({ storage: storage });
+
   // create a new user
   app.post(
     "/api/users/create",
+    upload.single("user_image"),
     // passport.authenticate("jwt", { session: false }),
     // allowOnly(config.accessLevels.admin, create)
     create
@@ -45,6 +65,7 @@ module.exports = (app) => {
   // update a user with id
   app.put(
     "/api/users/:userId",
+    upload.single("user_image"),
     passport.authenticate("jwt", {
       session: false,
     }),

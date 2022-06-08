@@ -4,6 +4,7 @@ import passport from "passport";
 
 import db from "../models";
 const User = db.User;
+const UserType = db.UserType;
 
 // load input validation
 import validateRegisterForm from "../validation/register";
@@ -34,7 +35,14 @@ const create = (req, res) => {
         address,
         city,
         UserTypeId,
+        user_image: "",
       };
+
+      if (!req.file) {
+        let imgPath = "http://localhost:8080/images/" + req.file.filename;
+        newUser.user_image = imgPath;
+      }
+
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
           if (err) throw err;
@@ -116,6 +124,13 @@ const login = (req, res) => {
 const findAllUsers = async (req, res) => {
   await User.findAll({
     attributes: { exclude: ["password", "createdAt", "updatedAt"] },
+    include: {
+      model: UserType,
+      attributes: {
+        include: [["name", "type_name"]],
+        // exclude: ["name", "accessLevel", "role"],
+      },
+    },
   })
     .then((user) => {
       res.json({ user });
@@ -134,6 +149,7 @@ const findById = (req, res) => {
     where: { id },
     // include: ["marks", "dept"],
     include: [{ all: true }],
+    attributes: { exclude: ["password", "createdAt", "updatedAt"] },
   })
     .then((user) => {
       if (!user.length) {
@@ -146,22 +162,16 @@ const findById = (req, res) => {
 
 // update a user's info
 const update = (req, res) => {
-  let { firstname, lastname, email, password, address, city, UserTypeId } =
-    req.body;
+  let user = req.body;
   const id = req.params.userId;
 
-  User.update(
-    {
-      firstname,
-      lastname,
-      email,
-      password,
-      address,
-      city,
-      UserTypeId,
-    },
-    { where: { id } }
-  )
+  if (!req.file) {
+    user.user_image = user.user_image || "";
+  } else {
+    let imgPath = "http://localhost:8080/images/" + req.file.filename;
+    user.user_image = imgPath;
+  }
+  User.update(user, { where: { id } })
     .then((user) => res.status(200).json({ user }))
     .catch((err) => res.status(500).json({ err }));
 };
