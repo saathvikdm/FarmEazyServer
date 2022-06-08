@@ -13,8 +13,16 @@ import validateLoginForm from "../validation/login";
 // create user
 const create = (req, res) => {
   const { errors, isValid } = validateRegisterForm(req.body);
-  let { firstname, lastname, email, password, address, city, UserTypeId } =
-    req.body;
+  let {
+    firstname,
+    lastname,
+    email,
+    password,
+    address,
+    city,
+    UserTypeId,
+    phone,
+  } = req.body;
 
   // check validation
   if (!isValid) {
@@ -34,11 +42,12 @@ const create = (req, res) => {
         password,
         address,
         city,
+        phone,
         UserTypeId,
         user_image: "",
       };
 
-      if (!req.file) {
+      if (req.file) {
         let imgPath = "http://localhost:8080/images/" + req.file.filename;
         newUser.user_image = imgPath;
       }
