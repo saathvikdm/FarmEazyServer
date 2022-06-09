@@ -68,6 +68,13 @@ const updateProduct = (req, res) => {
   let product = req.body;
   const id = req.params.productId;
 
+  if (!req.file) {
+    product.image = product.image || "";
+  } else {
+    let imgPath = "http://localhost:8080/images/" + req.file.filename;
+    product.image = imgPath;
+  }
+
   Product.update(product, { where: { id } })
     .then((product) => res.status(200).json({ product }))
     .catch((err) => res.status(500).json({ err }));

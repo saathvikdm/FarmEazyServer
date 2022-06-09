@@ -46,6 +46,7 @@ module.exports = (app) => {
 
   app.put(
     "/api/product/:productId",
+    upload.single("image"),
     passport.authenticate("jwt", { session: false }),
     allowOnly(config.accessLevels.user, updateProduct)
   );
