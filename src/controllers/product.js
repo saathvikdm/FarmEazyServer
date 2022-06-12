@@ -9,9 +9,10 @@ const createProduct = (req, res) => {
 
   if (!req.file) {
     res.status(400).send("ERROR: file not found");
+  } else {
+    let imgPath = "http://localhost:8080/images/" + req.file.filename;
+    product.image = imgPath;
   }
-  let imgPath = "http://localhost:8080/images/" + req.file.filename;
-  product.image = imgPath;
 
   Product.create(product)
     .then((product) => {
@@ -86,7 +87,7 @@ const deleteProduct = (req, res) => {
 
   Product.destroy({ where: { id } })
     .then((product) =>
-      res.status.json({ msg: "Product has been deleted successfully!" })
+      res.status(200).json({ msg: "Product has been deleted successfully!" })
     )
     .catch((err) => res.status(500).json({ msg: "Something went wrong." }));
 };

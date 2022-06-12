@@ -25,12 +25,13 @@ app.set("view engine", "ejs");
 // make express look in the public directory for assets (css/js/img)
 app.use(express.static(__dirname + "/public"));
 
-app.use(
-  cors({
-    origin: "*", // <-- location of the react app we're connecting to
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: "*", // <-- location of the react app we're connecting to
+//     credentials: true,
+//   })
+// );
+app.use(cors());
 
 // force: true will drop the table if it already exits
 // models.sequelize.sync({ force: true }).then(() => {

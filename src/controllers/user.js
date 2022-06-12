@@ -109,7 +109,7 @@ const login = (req, res) => {
               payload,
               "secret",
               {
-                expiresIn: 3600,
+                expiresIn: "24h",
               },
               (err, token) => {
                 res.json({
@@ -180,9 +180,22 @@ const update = (req, res) => {
     let imgPath = "http://localhost:8080/images/" + req.file.filename;
     user.user_image = imgPath;
   }
-  User.update(user, { where: { id } })
-    .then((user) => res.status(200).json({ user }))
-    .catch((err) => res.status(500).json({ err }));
+
+  if (user.password) {
+    bcrypt.genSalt(10, (err, salt) => {
+      bcrypt.hash(user.password, salt, (err, hash) => {
+        if (err) throw err;
+        user.password = hash;
+        User.update(user, { where: { id } })
+          .then((user) => res.status(200).json({ user }))
+          .catch((err) => res.status(500).json({ err }));
+      });
+    });
+  } else {
+    User.update(user, { where: { id } })
+      .then((user) => res.status(200).json({ user }))
+      .catch((err) => res.status(500).json({ err }));
+  }
 };
 
 // delete a user
@@ -191,7 +204,7 @@ const deleteUser = (req, res) => {
 
   User.destroy({ where: { id } })
     .then((user) =>
-      res.status.json({ msg: "User has been deleted successfully!" })
+      res.status(200).json({ msg: "User has been deleted successfully!" })
     )
     .catch((err) => res.status(500).json({ msg: "Something went wrong." }));
 };

@@ -108,7 +108,7 @@ const deleteOrder = (req, res) => {
 
   Order.destroy({ where: { id } })
     .then((order) =>
-      res.status.json({ msg: "Order has been deleted successfully!" })
+      res.status(200).json({ msg: "Order has been deleted successfully!" })
     )
     .catch((err) => res.status(500).json({ msg: "Something went wrong." }));
 };
