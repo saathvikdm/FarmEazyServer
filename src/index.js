@@ -12,6 +12,9 @@ import db from "./models";
 const User = db.User;
 const UserType = db.UserType;
 
+require("babel-core/register");
+require("babel-polyfill");
+
 const app = express();
 
 app.use(bodyParser.json());
