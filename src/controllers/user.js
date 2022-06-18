@@ -48,7 +48,7 @@ const create = (req, res) => {
       };
 
       if (req.file) {
-        let imgPath = "http://localhost:8080/images/" + req.file.filename;
+        let imgPath = process.env.IMG_PATH + req.file.filename;
         newUser.user_image = imgPath;
       }
 
@@ -177,7 +177,7 @@ const update = (req, res) => {
   if (!req.file) {
     user.user_image = user.user_image || "";
   } else {
-    let imgPath = "http://localhost:8080/images/" + req.file.filename;
+    let imgPath = process.env.IMG_PATH + req.file.filename;
     user.user_image = imgPath;
   }
 

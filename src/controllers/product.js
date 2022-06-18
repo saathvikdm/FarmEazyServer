@@ -10,7 +10,7 @@ const createProduct = (req, res) => {
   if (!req.file) {
     res.status(400).send("ERROR: file not found");
   } else {
-    let imgPath = "http://localhost:8080/images/" + req.file.filename;
+    let imgPath = process.env.IMG_PATH + req.file.filename;
     product.image = imgPath;
   }
 
@@ -72,7 +72,7 @@ const updateProduct = (req, res) => {
   if (!req.file) {
     product.image = product.image || "";
   } else {
-    let imgPath = "http://localhost:8080/images/" + req.file.filename;
+    let imgPath = process.env.IMG_PATH + req.file.filename;
     product.image = imgPath;
   }
 
